@@ -1,0 +1,11 @@
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\bin\Debug\RoyalPalace.exe.config
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\bin\Debug\RoyalPalace.exe
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\bin\Debug\RoyalPalace.pdb
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.csprojAssemblyReference.cache
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.Form1.resources
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.Properties.Resources.resources
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.csproj.GenerateResource.cache
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.csproj.CoreCompileInputs.cache
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.exe
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.pdb
+C:\Users\Lab_ETESP\source\repos\RoyalPalace\RoyalPalace\obj\Debug\RoyalPalace.DESKETOP2.resources
