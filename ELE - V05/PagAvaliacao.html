@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Harry.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Avaliação</title>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="back-icon">
+            <a href="Pag2.html"><i class="material-icons">arrow_back</i></a>
+        </div>
+        <div class="icon-container">
+            <a href="home.html" class="home-icon"><i class="material-icons">home</i> Home</a>
+            <a href="chart.html" class="chart-icon"><i class="material-icons">bar_chart</i> Dashboard</a>
+            <a href="bed.html" class="bed-icon"><i class="material-icons">king_bed</i> Quartos</a>
+            <a href="PagChekin.html" class="key-icon"><i class="material-icons">key</i> Check-in</a>
+        </div>
+        <div class="user-login">@<span id="user-name">Usuário</span></div>
+    </div>        
+        <div class="review-container">
+            <div class="review">
+                <div class="review-header">
+                    <span class="review-user">Pedro</span>
+                    <div class="stars">
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star_border</i>
+                        <i class="material-icons star">star_border</i>
+                    </div>
+                </div>
+                <p class="review-text">Ótimo desenvolvimento, sistema muito intuitivo!</p>
+            </div>
+    
+            <div class="review">
+                <div class="review-header">
+                    <span class="review-user">Mayara</span>
+                    <div class="stars">
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star_border</i>
+                        <i class="material-icons star">star_border</i>
+                        <i class="material-icons star">star_border</i>
+                    </div>
+                </div>
+                <p class="review-text">Bons sistemas, mas poderia ter mais opções de personalização.</p>
+            </div>
+    
+            <div class="review">
+                <div class="review-header">
+                    <span class="review-user">Karine</span>
+                    <div class="stars">
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star</i>
+                        <i class="material-icons star">star_border</i>
+                    </div>
+                </div>
+                <p class="review-text">Atendimento maravilhoso, gostei muito da experiência!</p>
+            </div>
+
+            <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">Yara</span>
+                        <div class="stars">
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star_border</i>
+                            <i class="material-icons star">star_border</i>
+                        </div>
+                    </div>
+                    <p class="review-text">Adorei a experiência! Desde o momento da chegada até a saída, tudo foi perfeito.</p>
+                </div>
+        
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">Rubens</span>
+                        <div class="stars">
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star_border</i>
+                            <i class="material-icons star">star_border</i>
+                            <i class="material-icons star">star_border</i>
+                        </div>
+                    </div>
+                    <p class="review-text">Uma das melhores experiências que já tive!. Trofeu de joinha 👍🏆<p>
+                </div>
+        
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-user">Bombom</span>
+                        <div class="stars">
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star</i>
+                            <i class="material-icons star">star_border</i>
+                        </div>
+                    </div>
+                    <p class="review-text">Excelente serviço! Fui atendido rapidamente, e a equipe foi super atenciosa. A experiência foi incrível do começo ao fim. Super recomendo!</p>
+                </div>    
+    </div>
+
+    <script>
+        const userName = localStorage.getItem('user');
+        if (userName) {
+            document.getElementById('user-name').textContent = userName;
+        }
+
+        let reservaIdAtual = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            buscarReservas();
+        });
+    </script>
+</body>
+</html>

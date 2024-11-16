@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Harry.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Gerenciamento de Reservas</title>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="back-icon">
+            <a href="Pag2.html"><i class="material-icons">arrow_back</i></a>
+        </div>
+        <div class="icon-container">
+            <a href="home.html" class="home-icon"><i class="material-icons">home</i> Home</a>
+            <a href="chart.html" class="chart-icon"><i class="material-icons">bar_chart</i> Dashboard</a>
+            <a href="bed.html" class="bed-icon"><i class="material-icons">king_bed</i> Quartos</a>
+            <a href="PagChekin.html" class="key-icon"><i class="material-icons">key</i> Check-in</a>
+        </div>
+        <div class="user-login">@<span id="user-name">Usuário</span></div>
+    </div>
+
+    <div class="search-container">
+        <div class="search-bar"> 
+            <i class="search-icon material-icons">search</i>
+            <input type="text" class="search-input" placeholder="Digite o nome do usuário">
+        </div>
+    </div>
+
+    <div class="user-display">
+        <div id="quartos-container"></div>
+        <div id="no-results-message" style="display: none; color: darkgray; text-align: center;">
+            Nenhum resultado encontrado.
+        </div>        
+    </div>
+
+    <div id="updateModal" style="display: none;">
+      <div class="modal-content">
+          <h2>Atualizar Reserva</h2>
+          <label for="reserva-id">ID da Reserva</label>
+          <input type="text" id="reserva-id" disabled>
+          
+          <label for="checkin-date">Data de Check-in</label>
+          <input type="date" id="checkin-date" required>
+          
+          <label for="checkout-date">Data de Check-out</label>
+          <input type="date" id="checkout-date" required>
+          
+          <label for="status-reserva">Status da Reserva</label>
+          <select id="status-reserva">
+              <option value="Confirmada">Confirmada</option>
+              <option value="Cancelada">Cancelada</option>
+              <option value="Pendente">Pendente</option>
+          </select>
+          
+          <div class="modal-buttons">
+              <button onclick="closeModal()">Cancelar</button>
+              <button onclick="saveChanges()">Salvar</button>
+          </div>
+      </div>
+  </div>
+
+
+  <script>
+    const userName = localStorage.getItem('user');
+    if (userName) {
+        document.getElementById('user-name').textContent = userName;
+    }
+
+    let reservaIdAtual = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buscarReservas();
+    });
+
+    async function buscarReservas() {
+    try {
+        const response = await fetch('http://localhost:3000/reservas');
+        if (!response.ok) throw new Error('Erro ao buscar dados');
+
+        const reservas = await response.json();
+        const container = document.getElementById('quartos-container');
+        container.innerHTML = '';
+
+        if (reservas.length === 0) {
+            document.getElementById('no-results-message').style.display = 'block';
+        } else {
+            document.getElementById('no-results-message').style.display = 'none';
+        }
+
+        reservas.forEach(reserva => {
+            const card = document.createElement('div');
+            card.className = 'quarto-card';
+
+            // Datas sem as horas
+            const dataCheckinFormatada = formatarData(reserva.Data_Checkin);
+            const dataCheckoutFormatada = formatarData(reserva.Data_Checkout);
+
+            card.innerHTML = `
+                <h2>Reserva ID: ${reserva.Id_Reserva}</h2>
+                <p>Cliente: ${reserva.Nome_Cliente || 'N/A'}</p>
+                <p>Status da Reserva: ${reserva.Status_Reserva || 'N/A'}</p>
+                <p>Data de Check-in: ${dataCheckinFormatada || 'N/A'}</p>
+                <p>Data de Check-out: ${dataCheckoutFormatada || 'N/A'}</p>
+                <hr>
+                <div class="button-container">
+                    <button class="alterar-button" onclick="openUpdateModal(${reserva.Id_Reserva}, '${reserva.Nome_Cliente}', '${dataCheckinFormatada}', '${dataCheckoutFormatada}', '${reserva.Status_Reserva}')">Alterar</button>
+                    <button class="excluir-button" onclick="deleteReservation(${reserva.Id_Reserva})">Excluir</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Não foi possível carregar as reservas.');
+    }
+}
+
+// formato 'DD/MM/YYYY'
+function formatarData(data) {
+    if (!data) return null;
+    const date = new Date(data);
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0'); // Mes começa do 0, por isso somamos 1
+    const ano = date.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+}
+
+function openUpdateModal(id, cliente, checkin, checkout, status) {
+    reservaIdAtual = id;
+    document.getElementById('reserva-id').value = id;
+    document.getElementById('checkin-date').value = checkin;
+    document.getElementById('checkout-date').value = checkout;
+    document.getElementById('status-reserva').value = status;
+    document.getElementById('updateModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('updateModal').style.display = 'none';
+    document.getElementById('delete-button').style.display = 'none';
+}
+
+async function saveChanges() {
+    const checkin = document.getElementById('checkin-date').value; // 'YYYY-MM-DD'
+    const checkout = document.getElementById('checkout-date').value; // 'YYYY-MM-DD'
+    const status = document.getElementById('status-reserva').value;
+
+    if (!checkin || !checkout || !status) {
+        alert('Todos os campos precisam ser preenchidos!');
+        return;
+    }
+
+    const id = reservaIdAtual; // id da reserva vai ser mudada
+
+    try {
+        const response = await fetch(`http://localhost:3000/reservas/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ checkin, checkout, status })
+        });
+
+        // Verifique se a resposta foi bem-sucedida
+        if (!response.ok) {
+            const errorResult = await response.json();
+            throw new Error(errorResult.message || 'Erro desconhecido ao atualizar reserva.');
+        }
+
+        const result = await response.json();
+        if (result.success) {
+            alert(result.message);
+            closeModal(); // fecha
+            buscarReservas(); // atualiza
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Erro ao salvar alterações:', error);
+        alert(`Erro ao salvar alterações: ${error.message}`);
+    }
+}
+
+    // excluir
+async function deleteReservation(id) {
+    if (!id) return; // Verifica se if
+
+    if (confirm('Tem certeza que deseja excluir esta reserva?')) {
+        try {
+            const response = await fetch(`http://localhost:3000/reservas/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) throw new Error('Erro ao deletar reserva');
+
+            const result = await response.json();
+            alert(result.message);
+            buscarReservas();
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Não foi possível excluir a reserva.');
+        }
+    }
+}
+
+
+</script>
+
+</body>
+</html>
